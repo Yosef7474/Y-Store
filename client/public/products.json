@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "sellerName": "John Doe",
+        "phoneNumber": "123-456-7890",
+        "price": 29.99,
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTZz9uIa7tvFHZC1OGYwMDljzSomp2RP6rhg&s",
+        "description": "A high-quality product for everyday use.",
+        "model": "Model A1"
+    },
+    {
+        "id": 2,
+        "sellerName": "Jane Smith",
+        "phoneNumber": "987-654-3210",
+        "price": 49.99,
+        "image": "https://image.made-in-china.com/202f0j00yPlbNWBrMkqC/Amazon-Hot-PC-RGB-Cooling-12V-DC-Low-Cost-6pin-Sleeve-Bearing-12cm-Argb-Single-Halo-Computer-Case-120mm-LED-Fan-Cooler.webp",
+        "description": "An excellent product with premium features.",
+        "model": "Model B2"
+    },
+    {
+        "id": 3,
+        "sellerName": "Alice Johnson",
+        "phoneNumber": "555-123-4567",
+        "price": 19.99,
+        "image": "https://images-na.ssl-images-amazon.com/images/I/41s62PEg7CL._AC_UL330_SR330,330_.jpg",
+        "description": "A budget-friendly product with great value.",
+        "model": "Model C3"
+    },
+    {
+        "id": 4,
+        "sellerName": "Bob Brown",
+        "phoneNumber": "444-555-6666",
+        "price": 39.99,
+        "image": "https://example.com/product4.jpg",
+        "description": "A versatile product for multiple uses.",
+        "model": "Model D4"
+    },
+    {
+        "id": 5,
+        "sellerName": "Carol White",
+        "phoneNumber": "333-444-5555",
+        "price": 59.99,
+        "image": "https://example.com/product5.jpg",
+        "description": "A premium product with advanced features.",
+        "model": "Model E5"
+    },
+    {
+        "id": 6,
+        "sellerName": "David Green",
+        "phoneNumber": "222-333-4444",
+        "price": 24.99,
+        "image": "https://example.com/product6.jpg",
+        "description": "A reliable product for everyday tasks.",
+        "model": "Model F6"
+    },
+    {
+        "id": 7,
+        "sellerName": "Eva Black",
+        "phoneNumber": "111-222-3333",
+        "price": 34.99,
+        "image": "https://example.com/product7.jpg",
+        "description": "A stylish product with modern design.",
+        "model": "Model G7"
+    },
+    {
+        "id": 8,
+        "sellerName": "Frank Blue",
+        "phoneNumber": "666-777-8888",
+        "price": 44.99,
+        "image": "https://example.com/product8.jpg",
+        "description": "A durable product for long-term use.",
+        "model": "Model H8"
+    },
+    {
+        "id": 9,
+        "sellerName": "Grace Yellow",
+        "phoneNumber": "777-888-9999",
+        "price": 54.99,
+        "image": "https://example.com/product9.jpg",
+        "description": "A high-performance product with top features.",
+        "model": "Model I9"
+    },
+    {
+        "id": 10,
+        "sellerName": "Henry Purple",
+        "phoneNumber": "888-999-0000",
+        "price": 64.99,
+        "image": "https://example.com/product10.jpg",
+        "description": "A luxury product with exclusive features.",
+        "model": "Model J10"
+    }
+]
