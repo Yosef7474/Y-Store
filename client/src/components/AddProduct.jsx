@@ -11,7 +11,7 @@ return (
                     </div>
                     <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productDescription">Product Description:</label>
-                            <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="productDescription" name="productDescription" required></textarea>
+                            <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="productDescription" name="productDescription" ></textarea>
                     </div>
                     <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productPrice">Product Price:</label>
@@ -20,6 +20,10 @@ return (
                     <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productImage">Product Image:</label>
                             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="file" id="productImage" name="productImage" required />
+                    </div>
+                    <div className='mb-4'>
+                        <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2">Phone</label>
+                        <input type="phone" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id='phone' name='phoneNumber' required />
                     </div>
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Add Product</button>
             </form>

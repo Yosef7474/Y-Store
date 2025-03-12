@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
+        default: "no description",
     },
     price: {
         type: Number,
@@ -23,6 +23,10 @@ const productSchema = new mongoose.Schema({
     seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     phone: {
         type: Number,
+        required: true
+    },
+    address:{
+        type: String,
         required: true
     }
 });

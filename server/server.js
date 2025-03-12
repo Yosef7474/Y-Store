@@ -14,9 +14,17 @@ app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 // mongodb connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+async function main() {
+  await mongoose.connect(process.env.MONGO_URI);
+  app.use('/', (req, res) => {
+    res.send('Book server is Running!')
+  });
+  app.use((req, res) => {
+    res.status(404).json({ message: "Route not found" });
+  });
+}
+
+main().then(() => console.log("MongoDB connected successfully")).catch(err => console.log(err));
 
 // routes
 app.get('/', (req, res) => {

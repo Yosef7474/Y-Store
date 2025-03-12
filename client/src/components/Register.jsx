@@ -6,7 +6,7 @@ const Register = () => {
   return (
     <>
       <div className="flex w-full h-screen bg-gray-100">
-        <div className="w-1/2 p-8 h-screen flex flex-col justify-center items-center bg-white shadow-lg">
+        <div className="w-1/2 max-sm:min-w-full p-8 h-screen flex flex-col justify-center items-center bg-white shadow-lg">
           <h1 className="text-4xl font-bold mb-8 text-gray-800">Create an Account</h1>
           <form action="post" className="w-full max-w-md">
             <div className="mb-6">
@@ -29,7 +29,7 @@ const Register = () => {
           </form>
         </div>
         <div className="w-1/2 h-screen">
-          <img className="w-full h-full object-cover" src={registerImage} alt="Register" />
+          <img className="w-full h-full object-cover max-sm:hidden" src={registerImage} alt="Register" />
         </div>
         
       </div>
