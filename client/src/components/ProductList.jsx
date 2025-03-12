@@ -7,7 +7,7 @@ const ProductList = () => {
 
     return (
         <>
-            <div className="product-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols4- gap-6 p-4">
+            <div className="product-list grid m-7 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols4- gap-6 p-4">
                 {Products.map((product, index) => (
                     <Link key={index} to={`/Detail/${product.id}`}>
                         <div className="product-card bg-white shadow-md rounded-lg overflow-hidden">

@@ -1,6 +1,6 @@
 import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { BrowserRouter, createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import Navbar from './components/Navbar.jsx'
@@ -9,7 +9,8 @@ import Detail from './components/Detail.jsx'
 import Aboutus from './components/Aboutus.jsx'
 import AddProduct from './components/AddProduct.jsx'
 import Footer from './components/Footer.jsx'
-
+import Register from './components/Register.jsx'
+import { Link } from 'react-router-dom'
 
 
 const router = createBrowserRouter([{
@@ -31,14 +32,24 @@ const router = createBrowserRouter([{
 {
   path: '/addproduct',
   element: <AddProduct/>
+},
+{
+  path: '/register',
+  element: <Register/>
 }
 ]);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    
+
     <RouterProvider router={router}/>
+    
+    <BrowserRouter>
+    
+    
     <Footer/>
+    </BrowserRouter>
+    
     
   </StrictMode>
 )
