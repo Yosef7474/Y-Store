@@ -1,5 +1,6 @@
 import React from 'react'
 import registerImage from '../assets/register.jpg'
+import { Link } from 'react-router-dom'
 
 
 const Register = () => {
@@ -26,11 +27,14 @@ const Register = () => {
               <input type="password" id="confirmPassword" name="confirmPassword" required className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300">Register</button>
+            <p>Already have account? <Link to="/Login" className='text-blue-600' >Login</Link></p> 
           </form>
         </div>
         <div className="w-1/2 h-screen">
           <img className="w-full h-full object-cover max-sm:hidden" src={registerImage} alt="Register" />
         </div>
+
+        
         
       </div>
     </>

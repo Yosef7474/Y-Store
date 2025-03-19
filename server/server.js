@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const authRoutes = require('./routes/authRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 dotenv.config();
 
@@ -13,11 +15,14 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
+
 // mongodb connection
 async function main() {
   await mongoose.connect(process.env.MONGO_URI);
   app.use('/', (req, res) => {
-    res.send('Book server is Running!')
+    res.send('server is Running!')
   });
   app.use((req, res) => {
     res.status(404).json({ message: "Route not found" });

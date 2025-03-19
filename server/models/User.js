@@ -19,12 +19,19 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    image:{
+        type: String,
+        default: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F825566175412927173%2F&psig=AOvVaw3J7Zm9f2wY2J1Jw8z4ZQ4d&ust=1632270681033000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNjV2K7Y6fMCFQAAAAAdAAAAABAD"
+
+    },
     isAdmin: {
         type: Boolean,
-        required: true,
+        
         default: false
     }
     });
+
+    
 
     userSchema.pre('save', async function(next) {
         if (this.isModified('password')) {

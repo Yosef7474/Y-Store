@@ -25,8 +25,8 @@ const Navbar = () => {
             <div className={`md:flex space-x-4 ${isOpen ? 'block' : 'hidden'}`}>
               <Link to="/contact" className="text-gray-300 hover:text-white">Contact</Link>
               <Link to="/register" className="text-gray-300 hover:text-white">Login</Link>
-              <Link to="/add-product" className="text-gray-300 hover:text-white bg-blue-500 p-1 rounded-md">Sell</Link>
-              <Link to="/about-us" className="text-gray-300 hover:text-white">About us</Link>
+              <Link to="/addproduct" className="text-gray-300 hover:text-white bg-blue-500 p-1 rounded-md">Sell</Link>
+              <Link to="/aboutus" className="text-gray-300 hover:text-white">About us</Link>
             </div>
           </div>
         </div>
@@ -34,8 +34,8 @@ const Navbar = () => {
           <div className="md:hidden mt-2 space-y-2">
             <Link to="/contact" className="block text-gray-300 hover:text-white">Contact</Link>
             <Link to="/register" className="block text-gray-300 hover:text-white">Login</Link>
-            <Link to="/add-product" className="block text-gray-300 hover:text-white bg-blue-500 p-1 rounded-md">Sell</Link>
-            <Link to="/about-us" className="block text-gray-300 hover:text-white">About us</Link>
+            <Link to="/addproduct" className="block text-gray-300 hover:text-white bg-blue-500 p-1 rounded-md">Sell</Link>
+            <Link to="/aboutus" className="block text-gray-300 hover:text-white">About us</Link>
           </div>
         )}
       </nav>

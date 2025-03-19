@@ -18,9 +18,10 @@ const productSchema = new mongoose.Schema({
     },
     imageUrl: {
         type: String,
-        required: true
+       
     },
-    seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    
     phone: {
         type: Number,
         required: true
@@ -30,3 +31,5 @@ const productSchema = new mongoose.Schema({
         required: true
     }
 });
+
+module.exports = mongoose.model('Product', productSchema);
