@@ -1,7 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
-import Products from '../../public/products.json';
-
+import Products from '../products.json'
 const Detail = () => {
     const { id } = useParams();
     const product = Products.find((product) => product.id === Number(id));

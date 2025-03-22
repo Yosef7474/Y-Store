@@ -1,31 +1,47 @@
-import React from 'react'
-import { useEffect, useState } from 'react';
-import Products from '../../public/products.json';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const ProductList = () => {
+  const [products, setProducts] = useState([]);
 
-    return (
-        <>
-            <div className="product-list grid m-7 grid-cols-2  sm:grid-cols-3 md:grid-cols-4 lg:grid-cols4- gap-6 p-4">
-                {Products.map((product, index) => (
-                    <Link key={index} to={`/Detail/${product.id}`}>
-                        <div className="product-card bg-white shadow-md rounded-lg overflow-hidden">
-                            <img src={product.image} alt={product.model} className="w-full h-48 object-cover" />
-                            <div className="p-4">
-                                <h2 className="text-xl font-semibold mb-2">{product.model}</h2>
-                                <p>{product.id}</p>
-                                {/* <p className="text-gray-700 mb-2">{product.description}</p> */}
-                                <p className="text-gray-600 mb-1">Seller: {product.sellerName}</p>
-                                <p className="text-gray-600 mb-1">Contact: {product.phoneNumber}</p>
-                                <p className="text-gray-800 font-bold">Price: ${product.price}</p>
-                            </div>
-                        </div>
-                    </Link>
-                ))}
-            </div>
-        </>
-    );
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/products');
+        if (Array.isArray(res.data)) {
+          setProducts(res.data);
+        } else {
+          console.error('Expected an array but got:', res.data);
+        }
+      } catch (err) {
+        console.error('Error fetching products:', err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+return (
+    <div className="container mx-auto p-4">
+        <h1 className="text-4xl font-bold text-center mb-8">Products</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {products.map((product) => (
+                <div key={product._id} className="border rounded-lg shadow-lg overflow-hidden">
+                    
+                    <div className="p-4">
+                        <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+                        
+                        <img src={product.imageUrl} alt="" />
+                        <p className="text-gray-700 mb-4">{product.description}</p>
+                        <p className="text-lg font-bold mb-2">Price: ${product.price}</p>
+                        <p className="text-gray-600">Seller: {product.seller.name}</p>
+                        <p className="text-gray-600">Phone: {product.seller.phone}</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+);
 };
 
 export default ProductList;
