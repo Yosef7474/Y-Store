@@ -3,14 +3,12 @@ const User = require('../models/User');
 // add new product
 
 exports.addProduct = async (req, res) => {
-    if (!req.User) {
-        return res.status(401).json({ message: "Unauthorized" });
-    }
+    
 
     const { name, description, price, imageUrl, phone, address } = req.body;
 
     try {
-        const product = new Product({ name, description, price, imageUrl, phone, address, seller: req.user._id });
+        const product = new Product({ name, description, price, imageUrl, phone, address});
         await product.save();
         res.status(201).json({ message: "Product added successfully" });
     }
