@@ -20,8 +20,15 @@ const productSchema = new mongoose.Schema({
         type: String,
        
     },
-    seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    
+    imageUrl:{
+        type: String,
+        required: true
+    },
+    seller: {
+        id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        name: { type: String, required: true },
+        phone: { type: String, required: true },
+      },
     phone: {
         type: Number,
         required: true

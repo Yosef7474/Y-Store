@@ -8,7 +8,11 @@ exports.addProduct = async (req, res) => {
     const { name, description, price, imageUrl, phone, address } = req.body;
 
     try {
-        const product = new Product({ name, description, price, imageUrl, phone, address});
+        const product = new Product({ name, description, price, imageUrl, phone, address, seller: {
+        id: req.user.id, // Seller ID
+        name: req.user.name, // Seller username
+        phone: req.user.phone, // Seller phone number
+      } });
         await product.save();
         res.status(201).json({ message: "Product added successfully" });
     }

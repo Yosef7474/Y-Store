@@ -28,7 +28,7 @@ exports.login = async (req, res) => {
     if (!user || !(await bycrypt.compare(password, user.password))) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+    const token = jwt.sign({ id: user._id, name: user.name, phone: user.phone }, process.env.JWT_SECRET, { expiresIn: "30d" });
     res.status(200).json({ message: "User logged in successfully", token });
 }catch (error) {
     res.status(500).json({ message: error.message });
