@@ -12,6 +12,8 @@ const upload = require('../utils/multer');
 router.post('/add',authMiddleware, upload.single('imageUrl'), productController.addProduct);
 // get all products
 router.get('/', productController.getProducts);
+// get single product
+router.get('/:id', productController.getProduct);
 
 module.exports = router;
 

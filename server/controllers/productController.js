@@ -32,3 +32,14 @@ exports.getProducts = async (req, res) => {
     }
 }
 
+// get single product
+exports.getProduct = async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id).populate('seller', 'name email phone');
+        res.status(200).json( product );
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
