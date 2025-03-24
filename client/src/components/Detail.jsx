@@ -31,7 +31,7 @@ const Detail = () => {
         <>
             {product ? (
                 <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-                    <h1 className="text-4xl font-bold mb-4">Product: {product.model}</h1>
+                    <h1 className="text-4xl font-bold mb-4">Product: {product.name}</h1>
                     <img className="w-64 h-64 object-cover mb-4" src={product.imageUrl} alt={product.model} />
                     <p className="text-lg mb-4">{product.description}</p>
                     <p className="text-2xl font-semibold">Price: ${product.price}</p>

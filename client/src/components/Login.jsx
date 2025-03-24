@@ -16,6 +16,7 @@ const Login = () => {
         document.cookie = `token=${res.data.token}; path=/;`; // Save the token in a cookie
         alert('Login successful!');
         navigate('/');
+        window.location.reload();
       } catch (err) {
         console.error('Error logging in:', err);
         alert('Invalid credentials');

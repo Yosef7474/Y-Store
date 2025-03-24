@@ -11,45 +11,17 @@ import AddProduct from './components/AddProduct.jsx'
 import Footer from './components/Footer.jsx'
 import Register from './components/Register.jsx'
 import { Link } from 'react-router-dom'
+import { AuthProvider } from './context/authContext.jsx'
+import PrivateRoute from './routes/privateRoutes.jsx'
+import router from './routes/router.jsx'
 
-
-const router = createBrowserRouter([{
-  path: '/',
-  element: <App />
-},
-{
-  path: 'login',
-  element: <Login/>
-},
-{
-  path: '/Detail/:id',
-  element: <Detail/>
-},
-{
-  path: '/aboutus',
-  element: <Aboutus/>
-},
-{
-  path: '/addproduct',
-  element: <AddProduct/>
-},
-{
-  path: '/register',
-  element: <Register/>
-}
-]);
 
 createRoot(document.getElementById('root')).render(
 
   <StrictMode>
 
-
-    
     <RouterProvider router={router}/>
-    <Footer/>
-    
-    
-    
+
   </StrictMode>
   
 )

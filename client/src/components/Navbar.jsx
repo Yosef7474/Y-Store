@@ -1,8 +1,19 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../context/authContext';
 
-const Navbar = ({ user }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useContext(AuthContext);
+  
+
+ 
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <>
@@ -25,7 +36,10 @@ const Navbar = ({ user }) => {
             <div className={`md:flex space-x-4 ${isOpen ? 'block' : 'hidden'}`}>
               <Link to="/contact" className="text-gray-300 hover:text-white">Contact</Link>
               {user ? (
-                <span className="text-gray-300 hover:text-white">Hello, {user.name}</span>
+                <>
+                  <span className="text-gray-300 hover:text-white">{user.name}</span>
+                  <button onClick={handleLogout} className="text-gray-300 hover:text-white">Logout</button>
+                </>
               ) : (
                 <Link to="/login" className="text-gray-300 hover:text-white">Login</Link>
               )}
@@ -38,7 +52,10 @@ const Navbar = ({ user }) => {
           <div className="md:hidden mt-2 space-y-2">
             <Link to="/contact" className="block text-gray-300 hover:text-white">Contact</Link>
             {user ? (
-              <span className="block text-gray-300 hover:text-white">Hello, {user.name}</span>
+              <>
+                <span className="block text-gray-300 hover:text-white">Hello, {user.name}</span>
+                <button onClick={handleLogout} className="block text-gray-300 hover:text-white">Logout</button>
+              </>
             ) : (
               <Link to="/login" className="block text-gray-300 hover:text-white">Login</Link>
             )}
@@ -48,7 +65,7 @@ const Navbar = ({ user }) => {
         )}
       </nav>
     </>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
