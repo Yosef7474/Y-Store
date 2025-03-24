@@ -18,11 +18,11 @@ const productSchema = new mongoose.Schema({
     },
     imageUrl: {
         type: String,
-       
+       default: null
     },
     imageUrl:{
         type: String,
-        required: true
+        
     },
     seller: {
         id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

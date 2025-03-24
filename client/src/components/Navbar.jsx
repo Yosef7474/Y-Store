@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
@@ -24,7 +24,11 @@ const Navbar = () => {
             </div>
             <div className={`md:flex space-x-4 ${isOpen ? 'block' : 'hidden'}`}>
               <Link to="/contact" className="text-gray-300 hover:text-white">Contact</Link>
-              <Link to="/login" className="text-gray-300 hover:text-white">Login</Link>
+              {user ? (
+                <span className="text-gray-300 hover:text-white">Hello, {user.name}</span>
+              ) : (
+                <Link to="/login" className="text-gray-300 hover:text-white">Login</Link>
+              )}
               <Link to="/addproduct" className="text-gray-300 hover:text-white bg-blue-500 p-1 rounded-md">Sell</Link>
               <Link to="/aboutus" className="text-gray-300 hover:text-white">About us</Link>
             </div>
@@ -33,7 +37,11 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden mt-2 space-y-2">
             <Link to="/contact" className="block text-gray-300 hover:text-white">Contact</Link>
-            <Link to="/register" className="block text-gray-300 hover:text-white">Login</Link>
+            {user ? (
+              <span className="block text-gray-300 hover:text-white">Hello, {user.name}</span>
+            ) : (
+              <Link to="/login" className="block text-gray-300 hover:text-white">Login</Link>
+            )}
             <Link to="/addproduct" className="block text-gray-300 hover:text-white bg-blue-500 p-1 rounded-md">Sell</Link>
             <Link to="/aboutus" className="block text-gray-300 hover:text-white">About us</Link>
           </div>

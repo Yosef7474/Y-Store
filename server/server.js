@@ -28,7 +28,6 @@ async function main() {
     res.status(404).json({ message: "Route not found" });
   });
 }
-
 main().then(() => console.log("MongoDB connected successfully")).catch(err => console.log(err));
 
 // routes

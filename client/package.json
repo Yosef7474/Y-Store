@@ -11,6 +11,7 @@
     "build:css": "postcss src/index.css -o dist/output.css"
   },
   "dependencies": {
+    "@remix-run/node": "^2.16.2",
     "axios": "^1.8.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
