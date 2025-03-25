@@ -7,14 +7,15 @@ exports.register = async (req, res) => {
     const { name, email, password, phone } = req.body;
 
     try {
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ $or: [{ email }, { phone }] });;
         if (existingUser) {
             return res.status(400).json({ message: "User already registered" });
         }
 
         const user = new User({ name, email, password, phone });
         await user.save();
-        res.status(201).json({ message: "User registered successfully" });
+        const token = jwt.sign({ id: user._id, name: user.name, phone: user.phone }, process.env.JWT_SECRET, { expiresIn: "30d" });
+        res.status(201).json({ message: "User registered successfully", token });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

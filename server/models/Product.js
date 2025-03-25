@@ -16,12 +16,13 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    imageUrl: {
-        type: String,
-       default: null
-    },
     imageUrl:{
-        type: String,
+        type: [String],   
+        required: true 
+    },
+    additionalImages: {
+        type: [String],
+        default: [],
         
     },
     seller: {
@@ -30,12 +31,16 @@ const productSchema = new mongoose.Schema({
         phone: { type: String, required: true },
       },
     phone: {
-        type: Number,
+        type: String,
         required: true
     },
     address:{
         type: String,
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 });
 

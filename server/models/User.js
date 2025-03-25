@@ -17,7 +17,8 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
     image:{
         type: String,
@@ -28,6 +29,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         
         default: false
+    },
+    createdAt:{
+        type: Date,
+        default: Date.now
     }
     });
 
