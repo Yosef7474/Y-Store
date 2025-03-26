@@ -7,6 +7,8 @@ import Aboutus from "../components/Aboutus.jsx";
 import AddProduct from "../components/AddProduct.jsx";
 import Register from "../components/Register.jsx";
 import PrivateRoute from "./privateRoutes.jsx";
+import Myproducts from "../components/Myproducts.jsx";
+import EditProduct from "../components/EditProduct.jsx";
 
 
 
@@ -33,6 +35,14 @@ const router = createBrowserRouter([{
   {
     path: '/register',
     element: <Register/>
+  },
+  {
+    path: '/myproducts',
+    element: <PrivateRoute> <Myproducts/></PrivateRoute>
+  },
+  {
+    path: '/edit-product/:id',
+    element: <PrivateRoute><EditProduct/></PrivateRoute>
   }
   ]);
 

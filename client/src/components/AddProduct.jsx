@@ -8,9 +8,11 @@ const AddProduct = () => {
     description: '',
     price: '',
     phone: '',
-    address: ''
+    address: '',
+    category: ''
   });
   const [images, setImages] = useState([]);
+  const [imageQuality, setImageQuality] = useState(50)
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
 
@@ -23,29 +25,97 @@ const AddProduct = () => {
     setImages(files);
   };
 
-  const uploadImagesToCloudinary = async (files) => {
-    const uploadedUrls = [];
-    
-    for (const file of files) {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', 'marketplace');
-      // formData.append('transformation', 'w_800,h_600,c_fill');
+  // compress image--------------------------------
+  const compressImage = async (file) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxWidth = 800;
+          const maxHeight = 600;
+          
+          let width = img.width;
+          let height = img.height;
 
-      try {
-        const response = await axios.post(
-          'https://api.cloudinary.com/v1_1/dmh8bkedu/image/upload',
-          formData
-        );
-        uploadedUrls.push(response.data.secure_url);
-      } catch (err) {
-        console.error('Error uploading image:', err);
-        throw new Error(`Failed to upload image: ${file.name}`);
-      }
-    }
-    console.log(response.data.secure_url);
-    return uploadedUrls;
+          // Calculate new dimensions while maintaining aspect ratio
+          if (width > height) {
+            if (width > maxWidth) {
+              height *= maxWidth / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width *= maxHeight / height;
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // Convert to compressed JPEG (adjust quality)
+          canvas.toBlob(
+            (blob) => {
+              resolve(new File([blob], file.name, {
+                type: 'image/jpeg',
+                lastModified: Date.now()
+              }));
+            },
+            'image/jpeg',
+            imageQuality / 100
+          );
+        };
+      };
+    });
   };
+
+
+
+
+
+// upload image --------------------------------------
+const uploadImagesToCloudinary = async (files) => {
+  const uploadedUrls = [];
+  
+  for (const file of files) {
+    try {
+      // Compress image before upload
+      const compressedFile = await compressImage(file);
+      
+      const formData = new FormData();
+      formData.append('file', compressedFile);
+      formData.append('upload_preset', 'marketplace');
+      
+      // Additional Cloudinary transformations
+      
+
+      const response = await axios.post(
+        'https://api.cloudinary.com/v1_1/dmh8bkedu/image/upload',
+        formData
+      );
+
+      if (!response.data.secure_url) {
+        throw new Error('Image upload failed');
+      }
+      
+      console.log('Uploaded image size:', 
+        Math.round(response.data.bytes / 1024) + 'KB');
+      uploadedUrls.push(response.data.secure_url);
+    } catch (err) {
+      console.error('Error uploading image:', err);
+      throw new Error(`Failed to upload ${file.name}: ${err.message}`);
+    }
+  }
+  
+  return uploadedUrls;
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -142,6 +212,29 @@ const AddProduct = () => {
             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
             required
           />
+        </div>
+        {/* Product Category */}
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+            Product Category:
+          </label>
+          <select
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="category"
+            value={formData.category}
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            required
+          >
+            <option value="">Select Category</option>
+            <option value="computers">Computers</option>
+            <option value="phones & tablets">Phones & tablets</option>
+            <option value="fashion">Fashion</option>
+            <option value="home">Home</option>
+            <option value="beauty">Beauty</option>
+            <option value="cars">Cars</option>
+            <option value="services">Services</option>
+
+          </select>
         </div>
 
         {/* Product Images */}
