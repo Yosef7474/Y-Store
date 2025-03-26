@@ -6,18 +6,17 @@ const Detail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/products/${id}`, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
+                const res = await axios.get(`http://localhost:5000/api/products/${id}`);
                 setProduct(res.data);
             } catch (err) {
                 console.error('Error fetching product:', err);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -32,36 +31,115 @@ const Detail = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex - 1 + product.imageUrl.length) % product.imageUrl.length);
     };
 
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-50 to-purple-50">
+                <div className="animate-pulse text-2xl font-semibold text-indigo-600">Loading...</div>
+            </div>
+        );
+    }
+
+    if (!product) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-50 to-purple-50">
+                <div className="text-2xl font-semibold text-red-500">Product not found</div>
+            </div>
+        );
+    }
+
     return (
-        <>
-            {product ? (
-                <div className="flex flex-col md:flex-row items-center md:items-start justify-center min-h-screen bg-gray-100 p-6 md:p-12">
-                    {/* Image Section */}
-                    <div className="w-full md:w-1/2 flex flex-col items-center">
+        <div className="min-h-screen bg-gradient-to-r from-indigo-50 to-purple-50">
+            <div className="flex flex-col lg:flex-row h-screen">
+                {/* Image Gallery - 60% width */}
+                <div className="w-full lg:w-3/5 h-full flex items-center justify-center p-4 lg:p-8">
+                    <div className="relative h-full w-full max-w-4xl  overflow-hidden  flex items-center">
                         <img
-                            className="w-full h-[500px] object-cover rounded-lg shadow-md"
+                            className="w-full h-full object-contain p-4 transition-all duration-300 hover:scale-105"
                             src={product.imageUrl[currentImageIndex]}
                             alt={product.model}
                         />
-                        <div className="flex justify-between w-full mt-4">
-                            <button onClick={handlePrevImage} className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-900">Previous</button>
-                            <button onClick={handleNextImage} className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-900">Next</button>
+                        
+                        {/* Navigation Arrows */}
+                        {product.imageUrl.length > 1 && (
+                            <>
+                                <button 
+                                    onClick={handlePrevImage}
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition-all hover:scale-110"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                </button>
+                                <button 
+                                    onClick={handleNextImage}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition-all hover:scale-110"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </>
+                        )}
+                        
+                        {/* Image Indicators */}
+                        <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                            {product.imageUrl.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setCurrentImageIndex(index)}
+                                    className={`w-3 h-3 rounded-full transition-all ${currentImageIndex === index ? 'bg-indigo-600 w-6' : 'bg-gray-300'}`}
+                                    aria-label={`Go to image ${index + 1}`}
+                                />
+                            ))}
                         </div>
                     </div>
+                </div>
+                
+                {/* Product Details - 40% width */}
+                <div className="w-full lg:w-2/5 h-full flex items-center justify-center p-4 lg:p-8">
+                    <div className=" p-6 lg:p-8 border-l-2 lg:border-gray-300 h-full max-w-2xl w-full flex flex-col">
+                        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{product.name}</h1>
+                        
+                        <p className="text-3xl font-bold text-indigo-600 mb-6"><p>birr</p>{product.price.toLocaleString()}</p>
                     
-                    {/* Product Details */}
-                    <div className="w-full md:w-1/2 md:pl-8 mt-6 md:mt-0">
-                        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{product.name}</h1>
-                        <p className="text-lg text-gray-700 mt-4">{product.description}</p>
-                        <p className="text-2xl font-semibold text-gray-900 mt-4">Price: ${product.price}</p>
-                        <p className="text-gray-500 text-sm mt-2">Listed on: {new Date(product.createdAt).toLocaleDateString()}</p>
+                        {/* Scrollable Description */}
+                        <div className="mb-6 overflow-y-auto flex-grow">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">Description</h3>
+                            <div className="prose prose-lg text-gray-600 max-h-[200px] lg:max-h-[300px] overflow-y-auto pr-2">
+                                <p className="whitespace-pre-line">{product.description}</p>
+                            </div>
+                        </div>
+                        
+                        <div className="flex space-x-4 mt-auto">
+                            <button className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 px-6 rounded-lg font-medium transition-all hover:shadow-lg">
+                            <a href={`tel:${product.phoneNumber}`} >
+                                Call seller
+                            </a>
+                            </button>
+                            
+                        </div>
+                        
+                        <div className="mt-4 border-t border-gray-200 pt-4">
+                            <p className="text-sm text-gray-500">
+                                Listed on: {new Date(product.createdAt).toLocaleDateString('en-US', { 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric' 
+                                })}
+                            </p>
+                        </div>
                     </div>
                 </div>
-            ) : (
-                <p className="text-center text-xl">Product not found</p>
-            )}
-        </>
+            </div>
+        </div>
     );
 };
 
 export default Detail;
+
+
+{/* <div className="flex space-x-4 mt-auto">
+                            <button  className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 px-6 rounded-lg font-medium transition-all hover:shadow-lg">
+                                Call seller
+                            </button>
+                        </div> */}

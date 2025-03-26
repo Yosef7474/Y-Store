@@ -230,11 +230,14 @@ const EditProduct = () => {
                         required
                     >
                         <option value="">Select a category</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="furniture">Furniture</option>
-                        <option value="books">Books</option>
-                        <option value="other">Other</option>
+                        <option value="computers">Computers</option>
+                        <option value="phones & tablets">Phones & Tablets</option>
+                        <option value="clothes & shoes">Clothes & shoes</option>
+                        <option value="books">Home</option>
+                        <option value="beauty">Beauty</option>
+                        <option value="cars">Cars</option>
+                        <option value="services">Services</option>
+                        <option value="others">Others</option>
                     </select>
                 </div>
 
