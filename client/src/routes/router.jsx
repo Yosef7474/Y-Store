@@ -9,41 +9,70 @@ import Register from "../components/Register.jsx";
 import PrivateRoute from "./privateRoutes.jsx";
 import Myproducts from "../components/Myproducts.jsx";
 import EditProduct from "../components/EditProduct.jsx";
+import Home from "../components/Home.jsx";
 
 
 
 const router = createBrowserRouter([{
     path: '/',
-    element: <App />
+    element: <App />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <Register /> },
+      { path: 'aboutus', element: <Aboutus /> },
+      { path: 'Detail/:id', element: <Detail/> },
+      { 
+        path: 'addproduct', 
+        element: (
+          <PrivateRoute>
+            <AddProduct />
+          </PrivateRoute>
+        ) 
+      },
+      { 
+        path: 'myproducts', 
+        element: (
+          <PrivateRoute>
+            <Myproducts />
+          </PrivateRoute>
+        ) 
+      },
+      {
+        path: '/edit-product/:id',
+        element: <PrivateRoute><EditProduct/></PrivateRoute>
+      }
+
+    ]
   },
-  {
-    path: 'login',
-    element: <Login/>
-  },
-  {
-    path: '/Detail/:id',
-    element: <Detail/>
-  },
-  {
-    path: '/aboutus',
-    element: <Aboutus/>
-  },
-  {
-    path: '/addproduct',
-    element: <PrivateRoute> <AddProduct/></PrivateRoute>
-  },
-  {
-    path: '/register',
-    element: <Register/>
-  },
-  {
-    path: '/myproducts',
-    element: <PrivateRoute> <Myproducts/></PrivateRoute>
-  },
-  {
-    path: '/edit-product/:id',
-    element: <PrivateRoute><EditProduct/></PrivateRoute>
-  }
+  // {
+  //   path: 'login',
+  //   element: <Login/>
+  // },
+  // {
+  //   path: '/Detail/:id',
+  //   element: <Detail/>
+  // },
+  // {
+  //   path: '/aboutus',
+  //   element: <Aboutus/>
+  // },
+  // {
+  //   path: '/addproduct',
+  //   element: <PrivateRoute> <AddProduct/></PrivateRoute>
+  // },
+  // {
+  //   path: '/register',
+  //   element: <Register/>
+  // },
+  // {
+  //   path: '/myproducts',
+  //   element: <PrivateRoute> <Myproducts/></PrivateRoute>
+  // },
+  // {
+  //   path: '/edit-product/:id',
+  //   element: <PrivateRoute><EditProduct/></PrivateRoute>
+  // }
   ]);
 
 

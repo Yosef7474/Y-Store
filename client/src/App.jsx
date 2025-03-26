@@ -7,17 +7,22 @@ import Footer from './components/Footer'
 import ProductList from './components/ProductList'
 import { AuthProvider } from './context/authContext'
 import { Outlet } from 'react-router-dom'
+import Home from './components/Home'
 
-function App() {
+function App({children}) {
 
   return (
    <>
    <AuthProvider>
-   <Navbar/>
-   <ProductList/>
-   <Outlet/>
-   <Footer/>
-   </AuthProvider>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-grow">
+          {children}
+          <Outlet />
+        </main>
+       
+      </div>
+    </AuthProvider>
    
    
    </>

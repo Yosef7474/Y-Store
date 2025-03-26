@@ -48,13 +48,13 @@ const Detail = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-indigo-50 to-purple-50">
-            <div className="flex flex-col lg:flex-row h-screen">
+        <div className="min-h-screen bg-gradient-to-r from-indigo-50 to-purple-50 mt-5">
+            <div className="flex flex-col lg:flex-row h-screen mt-5">
                 {/* Image Gallery - 60% width */}
                 <div className="w-full lg:w-3/5 h-full flex items-center justify-center p-4 lg:p-8">
                     <div className="relative h-full w-full max-w-4xl  overflow-hidden  flex items-center">
                         <img
-                            className="w-full h-full object-contain p-4 transition-all duration-300 hover:scale-105"
+                            className="w-full h-full object-contain p-4 mt-10 transition-all duration-300 hover:scale-105"
                             src={product.imageUrl[currentImageIndex]}
                             alt={product.model}
                         />
