@@ -26,7 +26,7 @@ const ProductList = () => {
  
 
 return (
-  <div className="container mx-auto p-4">
+  <div className="container mx-auto p-4 ">
     <h1 className="text-4xl font-bold text-center mb-8">Products</h1>
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {products.map((product) => (
@@ -40,7 +40,13 @@ return (
                 {product.name}
               </span>
             </h3>
-            <img src={product.imageUrl} alt="" className="w-full h-48 object-cover mb-4" />
+            {/* <img src={product.imageUrl} alt="" className="w-full h-48 object-cover mb-4" /> */}
+            {product.imageUrl?.length >= 0 && (
+        <img 
+         className="w-full h-48 object-cover mb-4"
+          src={product.imageUrl[0]} // Show first image
+        />
+      )}
             <p className="text-lg font-bold mb-2">Price: ${product.price}</p>
             <p className="text-gray-600">Seller: {product.seller.name}</p>
             <p className="text-gray-600">Phone: {product.seller.phone}</p>

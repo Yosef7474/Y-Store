@@ -15,7 +15,36 @@ const AddProduct = () => {
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
-    setImages([...e.target.files]);
+    const files = Array.from(e.target.files);
+    if (files.length > 4) {
+      alert('You can upload maximum 4 images');
+      return;
+    }
+    setImages(files);
+  };
+
+  const uploadImagesToCloudinary = async (files) => {
+    const uploadedUrls = [];
+    
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'marketplace');
+      // formData.append('transformation', 'w_800,h_600,c_fill');
+
+      try {
+        const response = await axios.post(
+          'https://api.cloudinary.com/v1_1/dmh8bkedu/image/upload',
+          formData
+        );
+        uploadedUrls.push(response.data.secure_url);
+      } catch (err) {
+        console.error('Error uploading image:', err);
+        throw new Error(`Failed to upload image: ${file.name}`);
+      }
+    }
+    console.log(response.data.secure_url);
+    return uploadedUrls;
   };
 
   const handleSubmit = async (e) => {
@@ -27,41 +56,25 @@ const AddProduct = () => {
         throw new Error('Please select at least one image');
       }
 
-      const uploadedImages = [];
-      for (let i = 0; i < images.length; i++) {
-        const imageFormData = new FormData();
-        imageFormData.append('file', images[i]);
-        imageFormData.append('upload_preset', 'marketplace');
-
-        const cloudinaryResponse = await axios.post(
-          'https://api.cloudinary.com/v1_1/dmh8bkedu/image/upload',
-          imageFormData
-        );
-
-        if (!cloudinaryResponse.data.secure_url) {
-          throw new Error('No secure_url returned from Cloudinary');
-        }
-
-        uploadedImages.push(cloudinaryResponse.data.secure_url);
-      }
-
+      // Upload all images to Cloudinary
+      const imageUrls = await uploadImagesToCloudinary(images);
+      
+      // Prepare product data with all images in imageUrl array
       const productData = {
-        name: formData.name,
-        description: formData.description,
-        price: formData.price,
-        phone: formData.phone,
-        address: formData.address,
-        imageUrl: uploadedImages[0],
-        additionalImages: uploadedImages.slice(1, 4),
+        ...formData,
+        imageUrl: imageUrls // Store all image URLs here
       };
 
+      // Get token from cookies
       const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
-
       if (!token) {
         throw new Error('No authentication token found');
       }
 
-      await axios.post('http://localhost:5000/api/products/add', productData,
+      // Send to backend
+      const response = await axios.post(
+        'http://localhost:5000/api/products/add',
+        productData,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -70,11 +83,12 @@ const AddProduct = () => {
         }
       );
 
+      console.log('Product added:', response.data);
       alert('Product added successfully!');
       navigate('/');
     } catch (err) {
-      console.error('Error adding product:', err);
-      alert(`Failed to add product: ${err.message}`);
+      console.error('Error:', err.response?.data || err);
+      alert(`Error: ${err.message}`);
     } finally {
       setUploading(false);
     }
@@ -111,7 +125,7 @@ const AddProduct = () => {
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             required
-          ></textarea>
+          />
         </div>
 
         {/* Product Price */}
@@ -133,7 +147,7 @@ const AddProduct = () => {
         {/* Product Images */}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">
-            Product Images:
+            Product Images (Max 4):
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -144,6 +158,11 @@ const AddProduct = () => {
             multiple
             required
           />
+          {images.length > 0 && (
+            <p className="text-xs text-gray-600 mt-1">
+              {images.length} image(s) selected
+            </p>
+          )}
         </div>
 
         {/* Phone */}
@@ -179,13 +198,25 @@ const AddProduct = () => {
         </div>
 
         {/* Submit Button */}
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="submit"
-          disabled={uploading}
-        >
-          {uploading ? 'Uploading...' : 'Add Product'}
-        </button>
+        <div className="flex items-center justify-between">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+            disabled={uploading}
+          >
+            {uploading ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Uploading...
+              </>
+            ) : (
+              'Add Product'
+            )}
+          </button>
+        </div>
       </form>
     </div>
   );
