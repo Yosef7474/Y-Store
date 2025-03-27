@@ -12,7 +12,10 @@ const Login = () => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const res = await axios.post('https://shopfloww.onrender.com/api/auth/login', formData);
+        const res = await axios.post(
+          // 'http://localhost:5000/api/auth/login',
+          'https://shopfloww.onrender.com/api/auth/login',
+           formData);
         document.cookie = `token=${res.data.token}; path=/;`; // Save the token in a cookie
         alert('Login successful!');
         navigate('/');

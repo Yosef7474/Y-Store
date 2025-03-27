@@ -142,7 +142,9 @@ const uploadImagesToCloudinary = async (files) => {
       }
 
       // Send to backend
-      const response = await axios.post('https://shopfloww.onrender.com/api/products/add',
+      const response = await axios.post(
+        // 'http://localhost:5000/api/products/api/products/add',
+        'https://shopfloww.onrender.com/api/products/add',
         productData,
         {
           headers: {

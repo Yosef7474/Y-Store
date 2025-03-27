@@ -21,7 +21,10 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
-      const res = await axios.post('https://shopfloww.onrender.com/api/auth/register', formdata);
+      const res = await axios.post(
+        // 'http://localhost:5000/api/auth/register',
+        'https://shopfloww.onrender.com/api/auth/register',
+         formdata);
       console.log(res);
       alert('Register successful!');
       // Assuming the response contains a token
