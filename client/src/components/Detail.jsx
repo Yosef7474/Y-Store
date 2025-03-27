@@ -100,7 +100,7 @@ const Detail = () => {
                     <div className=" p-6 lg:p-8 border-l-2 lg:border-gray-300 h-full max-w-2xl w-full flex flex-col">
                         <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{product.name}</h1>
                         
-                        <p className="text-3xl font-bold text-indigo-600 mb-6"><p>ETB</p>{product.price.toLocaleString()}</p>
+                        <p className="text-3xl font-bold text-indigo-600 mb-6">ETB{product.price.toLocaleString()}</p>
                     
                         {/* Scrollable Description */}
                         <div className="mb-6 overflow-y-auto flex-grow">
