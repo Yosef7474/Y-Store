@@ -106,7 +106,7 @@ const Myproducts = () => {
                 <h3 className="text-lg font-medium text-gray-900 mb-1">No products found</h3>
                 <p className="text-gray-500 mb-6">You haven't listed any products yet.</p>
                 <button 
-                    onClick={() => navigate('/add-product')}
+                    onClick={() => navigate('/addproduct')}
                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                 >
                     Add Your First Product

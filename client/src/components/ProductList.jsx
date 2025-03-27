@@ -78,8 +78,8 @@ const ProductList = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header with Search */}
         <div className="text-center mb-12  bg-gray-50 z-10 py-4">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
-            Our Products
+          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text">
+            What are you looking for?
           </h1>
           <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
             Discover amazing items from local sellers
@@ -168,7 +168,7 @@ const ProductList = () => {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
             {filteredProducts.map((product) => (
               <Link 
                 to={`/detail/${product._id}`} 

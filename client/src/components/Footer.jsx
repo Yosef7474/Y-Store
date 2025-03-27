@@ -17,7 +17,7 @@ const Footer = () => {
               >
                 <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
               </svg>
-              MarketPro
+              SHOPFLOW
             </Link>
             <p className="text-gray-400">
               The best marketplace for buying and selling quality products.
@@ -118,8 +118,8 @@ const Footer = () => {
                 Subscribe
               </button>
             </form>
-          </div>
-        </div> */}
+          </div> */}
+        </div>
 
         {/* Copyright */}
         <div className="mt-8 pt-6 border-t border-gray-800 text-center text-gray-400">

@@ -10,6 +10,7 @@ import PrivateRoute from "./privateRoutes.jsx";
 import Myproducts from "../components/Myproducts.jsx";
 import EditProduct from "../components/EditProduct.jsx";
 import Home from "../components/Home.jsx";
+import Contact from "../components/Contact.jsx";
 
 
 
@@ -22,6 +23,7 @@ const router = createBrowserRouter([{
       { path: 'register', element: <Register /> },
       { path: 'aboutus', element: <Aboutus /> },
       { path: 'Detail/:id', element: <Detail/> },
+      { path: 'contact', element: <Contact/>},
       { 
         path: 'addproduct', 
         element: (
