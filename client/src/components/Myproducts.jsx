@@ -17,7 +17,7 @@ const Myproducts = () => {
                 throw new Error('No authentication token found');
             }
 
-            const response = await axios.get('http://localhost:5000/api/products/myproducts','https://shopfloww.onrender.com/api/products/myproducts', {
+            const response = await axios.get('https://shopfloww.onrender.com/api/products/myproducts', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

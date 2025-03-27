@@ -13,7 +13,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/products', 'https://shopfloww.onrender.com/api/products');
+        const res = await axios.get('https://shopfloww.onrender.com/api/products');
         if (Array.isArray(res.data)) {
           const sortedProducts = res.data.sort((a, b) => 
             new Date(b.createdAt) - new Date(a.createdAt)
