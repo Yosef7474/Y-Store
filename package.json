@@ -1,5 +1,9 @@
 {
   "dependencies": {
     "cloudinary": "^2.6.0"
+  },
+  "scripts": {
+    "server-install": "cd server && npm install",
+    "server-start": "cd server && npm start"
   }
 }

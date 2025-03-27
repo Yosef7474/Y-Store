@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 // middleware
 app.use(cors(
- { origin: ['http://api.cloudinary.com/v1_1/dmh8bkedu/image/upload', 'http://localhost:5173','shopflow-git-main-yosefs-projects-c385ad18.vercel.app'],
+ { origin: ['http://api.cloudinary.com/v1_1/dmh8bkedu/image/upload', 'http://localhost:5173','https://shopflow-pi.vercel.app','https://shopflow-git-main-yosefs-projects-c385ad18.vercel.app'],
   credentials: true}
 ));
 app.use(express.json());
@@ -30,6 +30,7 @@ async function main() {
   app.use((req, res) => {
     res.status(404).json({ message: "Route not found" });
   });
+  
 }
 main().then(() => console.log("MongoDB connected successfully")).catch(err => console.log(err));
 
