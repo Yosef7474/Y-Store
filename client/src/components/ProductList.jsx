@@ -7,21 +7,28 @@ const ProductList = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get('http://localhost:5000/api/products');
         if (Array.isArray(res.data)) {
-          setProducts(res.data);
-          setFilteredProducts(res.data);
-          const uniqueCategories = [...new Set(res.data.map(product => product.category))];
+          // Sort products by createdAt date (newest first)
+          const sortedProducts = res.data.sort((a, b) => 
+            new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          setProducts(sortedProducts);
+          setFilteredProducts(sortedProducts);
+          const uniqueCategories = [...new Set(sortedProducts.map(product => product.category))];
           setCategories(uniqueCategories);
         } else {
           console.error('Expected an array but got:', res.data);
         }
       } catch (err) {
         console.error('Error fetching products:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -33,56 +40,172 @@ const ProductList = () => {
     if (category === '') {
       setFilteredProducts(products);
     } else {
-      setFilteredProducts(products.filter(product => product.category === category));
+      const filtered = products.filter(product => product.category === category);
+      setFilteredProducts(filtered);
     }
   };
 
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-4xl font-bold text-center mb-8">Products</h1>
-      <div className="flex justify-center mb-8">
-        <button
-          className={`px-4 py-2 mx-2 ${selectedCategory === '' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-          onClick={() => handleCategoryClick('')}
-        >
-          All
-        </button>
-        {categories.map((category) => (
-          <button
-            key={category}
-            className={`px-4 py-2 mx-2 ${selectedCategory === category ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-            onClick={() => handleCategoryClick(category)}
-          >
-            {category}
-          </button>
-        ))}
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((product) => (
-          <Link to={`/detail/${product._id}`} key={product._id} className="border rounded-lg shadow-lg overflow-hidden">
-            <div className="p-4">
-              <h3 className="text-xl font-semibold mb-2">
-                <span className="block sm:hidden">
-                  {product.name.length > 12 ? `${product.name.substring(0, 11)}...` : product.name}
-                </span>
-                <span className="hidden sm:block">
-                  {product.name}
-                </span>
-              </h3>
-              {product.imageUrl?.length >= 0 && (
-                <img 
-                  className="w-full h-48 object-cover mb-4"
-                  src={product.imageUrl[0]} // Show first image
-                  alt={product.name}
-                />
-              )}
-              <p className="text-lg font-bold mb-2">Price: ${product.price}</p>
-              <p className="text-gray-600">Seller: {product.seller.name}</p>
-              <p className="text-gray-600">Phone: {product.seller.phone}</p>
-              <p className="text-gray-600"> {new Date(product.createdAt).toLocaleDateString()}</p>
-            </div>
-          </Link>
-        ))}
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 pt-20 pb-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12 bg-gray-50 z-10 py-4">
+          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
+            Our Products
+          </h1>
+          <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
+            Discover amazing items from local sellers
+          </p>
+
+          {/* Category Filters */}
+          <div className="flex flex-wrap justify-center gap-2 mt-8">
+            <button
+              onClick={() => handleCategoryClick('')}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                selectedCategory === '' 
+                  ? 'bg-blue-600 text-white shadow-md' 
+                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+              }`}
+            >
+              All Categories
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => handleCategoryClick(category)}
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  selectedCategory === category
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        {filteredProducts.length === 0 ? (
+          <div className="text-center py-12">
+            <svg
+              className="mx-auto h-12 w-12 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1}
+                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <h3 className="mt-2 text-lg font-medium text-gray-900">No products found</h3>
+            <p className="mt-1 text-gray-500">
+              {selectedCategory 
+                ? `No products in the ${selectedCategory} category`
+                : "No products available"}
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
+            {filteredProducts.map((product) => (
+              <Link 
+                to={`/detail/${product._id}`} 
+                key={product._id} 
+                className="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300"
+              >
+                <div className="relative pb-[75%] bg-gray-100 overflow-hidden">
+                  {product.imageUrl?.length > 0 && (
+                    <img
+                      className="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      src={product.imageUrl[0]}
+                      alt={product.name}
+                    />
+                  )}
+                  {/* New product badge */}
+                  {Date.now() - new Date(product.createdAt).getTime() < 1 * 24 * 60 * 60 * 1000 && (
+                    <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                      NEW
+                    </span>
+                  )}
+                </div>
+                <div className="p-5">
+                  <div className="flex justify-between items-start">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      {product.name.length > 20 
+                        ? `${product.name.substring(0, 19)}...` 
+                        : product.name}
+                    </h3>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-base font-medium bg-gray-200 text-blue-500">
+                      ${product.price}
+                    </span>
+                  </div>
+                  <div className="mt-4 flex items-center text-sm text-gray-500">
+                    <svg
+                      className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    {product.seller?.name || 'Unknown seller'}
+                  </div>
+                  <div className="mt-2 flex items-center text-sm text-gray-500">
+                    <svg
+                      className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 012.43 8.326 13.019 13.019 0 012 5V3.5z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    {product.seller?.phone || 'N/A'}
+                  </div>
+                  <div className="mt-3 flex items-center text-xs text-gray-400">
+                    <svg
+                      className="flex-shrink-0 mr-1.5 h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    {Date.now() - new Date(product.createdAt).getTime() < 24 * 60 * 60 * 1000
+                      ? `${Math.floor((Date.now() - new Date(product.createdAt).getTime()) / (60 * 60 * 1000))} hours ago`
+                      : `Listed ${new Date(product.createdAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}`}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

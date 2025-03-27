@@ -48,7 +48,7 @@ const Detail = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-indigo-50 to-purple-50 mt-5">
+        <div className="min-h-screen  mt-5">
             <div className="flex flex-col lg:flex-row h-screen mt-5">
                 {/* Image Gallery - 60% width */}
                 <div className="w-full lg:w-3/5 h-full flex items-center justify-center p-4 lg:p-8">

@@ -15,7 +15,10 @@ function App({children}) {
    <>
    <AuthProvider>
       <div className="flex flex-col min-h-screen">
+        <div className='fixed z-10 w-full'>
         <Navbar />
+        </div>
+        
         <main className="flex-grow">
           {children}
           <Outlet />
