@@ -99,7 +99,7 @@ const Footer = () => {
           </div>
 
           {/* Newsletter */}
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <h3 className="text-lg font-semibold">Subscribe to Newsletter</h3>
             <p className="text-gray-400">
               Get updates on special offers and promotions.
@@ -119,7 +119,7 @@ const Footer = () => {
               </button>
             </form>
           </div>
-        </div>
+        </div> */}
 
         {/* Copyright */}
         <div className="mt-8 pt-6 border-t border-gray-800 text-center text-gray-400">

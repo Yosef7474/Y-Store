@@ -7,6 +7,7 @@ const ProductList = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,7 +15,6 @@ const ProductList = () => {
       try {
         const res = await axios.get('http://localhost:5000/api/products');
         if (Array.isArray(res.data)) {
-          // Sort products by createdAt date (newest first)
           const sortedProducts = res.data.sort((a, b) => 
             new Date(b.createdAt) - new Date(a.createdAt)
           );
@@ -35,14 +35,34 @@ const ProductList = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    // Apply both category filter and search filter
+    let result = products;
+    
+    // Apply category filter
+    if (selectedCategory) {
+      result = result.filter(product => product.category === selectedCategory);
+    }
+    
+    // Apply search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(product => 
+        product.name.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query)
+      );
+    }
+    
+    setFilteredProducts(result);
+  }, [selectedCategory, searchQuery, products]);
+
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
-    if (category === '') {
-      setFilteredProducts(products);
-    } else {
-      const filtered = products.filter(product => product.category === category);
-      setFilteredProducts(filtered);
-    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   if (loading) {
@@ -56,14 +76,32 @@ const ProductList = () => {
   return (
     <div className="min-h-screen bg-gray-50 pt-20 pb-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12 bg-gray-50 z-10 py-4">
+        {/* Header with Search */}
+        <div className="text-center mb-12  bg-gray-50 z-10 py-4">
           <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
             Our Products
           </h1>
           <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
             Discover amazing items from local sellers
           </p>
+
+          {/* Search Bar */}
+          <div className="mt-8 max-w-md mx-auto relative">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full px-6 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+          </div>
 
           {/* Category Filters */}
           <div className="flex flex-wrap justify-center gap-2 mt-8">
@@ -111,13 +149,26 @@ const ProductList = () => {
             </svg>
             <h3 className="mt-2 text-lg font-medium text-gray-900">No products found</h3>
             <p className="mt-1 text-gray-500">
-              {selectedCategory 
+              {searchQuery 
+                ? `No results for "${searchQuery}"`
+                : selectedCategory
                 ? `No products in the ${selectedCategory} category`
                 : "No products available"}
             </p>
+            {searchQuery && (
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('');
+                }}
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                Clear search
+              </button>
+            )}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
             {filteredProducts.map((product) => (
               <Link 
                 to={`/detail/${product._id}`} 
@@ -132,7 +183,6 @@ const ProductList = () => {
                       alt={product.name}
                     />
                   )}
-                  {/* New product badge */}
                   {Date.now() - new Date(product.createdAt).getTime() < 1 * 24 * 60 * 60 * 1000 && (
                     <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                       NEW
@@ -147,9 +197,14 @@ const ProductList = () => {
                         : product.name}
                     </h3>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-base font-medium bg-gray-200 text-blue-500">
-                      ${product.price}
+                      ETB:{product.price.toLocaleString()}
                     </span>
                   </div>
+                  {searchQuery && (
+                    <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                      {product.description}
+                    </p>
+                  )}
                   <div className="mt-4 flex items-center text-sm text-gray-500">
                     <svg
                       className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
@@ -193,12 +248,15 @@ const ProductList = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    {Date.now() - new Date(product.createdAt).getTime() < 24 * 60 * 60 * 1000
-                      ? `${Math.floor((Date.now() - new Date(product.createdAt).getTime()) / (60 * 60 * 1000))} hours ago`
+                    {Date.now() - new Date(product.createdAt).getTime() < 1 * 24 * 60 * 60 * 1000
+                      ? `Listed today at ${new Date(product.createdAt).toLocaleTimeString('en-US', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}`
                       : `Listed ${new Date(product.createdAt).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'short',
-                          day: 'numeric'
+                          day: 'numeric',
                         })}`}
                   </div>
                 </div>

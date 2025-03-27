@@ -12,7 +12,7 @@ const AddProduct = () => {
     category: ''
   });
   const [images, setImages] = useState([]);
-  const [imageQuality, setImageQuality] = useState(50)
+  const [imageQuality, setImageQuality] = useState(70)
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
 
