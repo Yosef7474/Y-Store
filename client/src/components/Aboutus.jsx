@@ -64,7 +64,7 @@ const AboutUs = () => {
               Our Core Values
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
-              These principles guide everything we do at Y-STORE
+              These principles guide everything we do at Shopflow
             </p>
           </div>
 

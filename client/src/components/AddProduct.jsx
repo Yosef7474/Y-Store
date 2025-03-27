@@ -232,6 +232,7 @@ const uploadImagesToCloudinary = async (files) => {
             <option value="beauty">Beauty</option>
             <option value="cars">Cars</option>
             <option value="services">Services</option>
+            <option value="books">Books</option>
             <option value="others">Others</option>
 
           </select>

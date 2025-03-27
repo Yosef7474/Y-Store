@@ -78,7 +78,7 @@ const EditProduct = () => {
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('upload_preset', 'marketplace');
-                formData.append('transformation', 'w_800,h_600,c_fill');
+                
 
                 const response = await axios.post(
                     'https://api.cloudinary.com/v1_1/dmh8bkedu/image/upload',
@@ -233,10 +233,11 @@ const EditProduct = () => {
                         <option value="computers">Computers</option>
                         <option value="phones & tablets">Phones & Tablets</option>
                         <option value="clothes & shoes">Clothes & shoes</option>
-                        <option value="books">Home</option>
+                        <option value="home">Home</option>
                         <option value="beauty">Beauty</option>
                         <option value="cars">Cars</option>
                         <option value="services">Services</option>
+                        <option value="books">Books</option>
                         <option value="others">Others</option>
                     </select>
                 </div>
