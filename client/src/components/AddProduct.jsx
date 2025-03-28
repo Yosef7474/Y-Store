@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import getBaseUrl from '../utils/baseUrl';
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +17,11 @@ const AddProduct = () => {
   const [imageQuality, setImageQuality] = useState(70)
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
+
+
+   useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -143,8 +150,7 @@ const uploadImagesToCloudinary = async (files) => {
 
       // Send to backend
       const response = await axios.post(
-        // 'http://localhost:5000/api/products/api/products/add',
-        'https://shopfloww.onrender.com/api/products/add',
+        `${getBaseUrl()}/api/products/api/products/add`,
         productData,
         {
           headers: {

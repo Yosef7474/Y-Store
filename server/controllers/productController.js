@@ -114,3 +114,59 @@ exports.deleteProduct = async (req, res) => {
 }
 
 
+// get liked products
+exports.likedProducts = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).populate('liked');
+    res.json(user.liked);
+    } catch (error) {
+        console.error(err.message);
+    res.status(500).send('Server Error');
+    }
+}
+
+// add products to liked
+exports.likeProducts = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+    const product = await Product.findById(req.params.productId);
+
+    if (!product) {
+        return res.status(404).json({ msg: 'Product not found' });
+      }
+
+       // Check if already liked
+    if (user.likedProducts.includes(req.params.productId)) {
+        return res.status(400).json({ msg: 'Product already liked' });
+      }
+      user.likedProducts.push(req.params.productId);
+    await user.save();
+    res.json(user.likedProducts);
+    } catch (err) {
+        console.error(err.message);
+    res.status(500).send('Server Error');
+    }
+}
+
+
+// remove product from liked
+exports.removeLikedProducts = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+
+        const index = user.likedProducts.indexOf(req.params.productId);
+        if (index === -1) {
+          return res.status(400).json({ msg: 'Product not in liked list' });
+        }
+    
+        user.likedProducts.splice(index, 1);
+        await user.save();
+        
+        res.json(user.likedProducts);
+    } catch (error) {
+        console.error(err.message);
+    res.status(500).send('Server Error');
+    }
+}
+
+

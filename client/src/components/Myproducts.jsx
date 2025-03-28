@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import getBaseUrl from '../utils/baseUrl';
 
 const Myproducts = () => {
     const [products, setProducts] = useState([]);
@@ -18,8 +19,7 @@ const Myproducts = () => {
             }
 
             const response = await axios.get(
-                // 'http://localhost:5000/api/products/myproducts',
-                'https://shopfloww.onrender.com/api/products/myproducts',
+                `${getBaseUrl()}/api/products/myproducts`,
                  {
                 headers: {
                     Authorization: `Bearer ${token}`

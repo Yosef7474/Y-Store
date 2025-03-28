@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -33,6 +34,10 @@ const Contact = () => {
     // Reset submission status after 5 seconds
     setTimeout(() => setSubmitted(false), 5000);
   };
+
+   useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">

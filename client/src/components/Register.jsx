@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import getBaseUrl from '../utils/baseUrl'
 
 
 const Register = () => {
@@ -16,14 +17,17 @@ const Register = () => {
     phone: ''
   })
 
+   useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
       const res = await axios.post(
-        // 'http://localhost:5000/api/auth/register',
-        'https://shopfloww.onrender.com/api/auth/register',
+        `${getBaseUrl()}/api/auth/register`,
          formdata);
       console.log(res);
       alert('Register successful!');

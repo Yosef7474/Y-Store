@@ -14,20 +14,14 @@ function App({children}) {
   return (
    <>
    <AuthProvider>
-      <div className="flex flex-col min-h-screen">
-        <div className='fixed z-10 w-full '>
-        <Navbar />
-        </div>
-        
-        <main className="flex-grow">
+
+          <Navbar />
+        <main className="min-h-screen mx-auto">
           {children}
           <Outlet />
         </main>
-       
-      </div>
+        <Footer />
     </AuthProvider>
-   
-   
    </>
   )
 }

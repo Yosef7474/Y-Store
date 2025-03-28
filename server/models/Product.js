@@ -40,7 +40,11 @@ const productSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    liked: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+      }]
 });
 
 module.exports = mongoose.model('Product', productSchema);

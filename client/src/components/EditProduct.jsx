@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import getBaseUrl from '../utils/baseUrl';
 
 const EditProduct = () => {
     const { id } = useParams();
@@ -25,6 +26,8 @@ const EditProduct = () => {
                localStorage.getItem('token');
     };
 
+
+
     // Fetch product data
     useEffect(() => {
         const fetchProduct = async () => {
@@ -35,8 +38,7 @@ const EditProduct = () => {
                 }
 
                 const response = await axios.get( 
-                    // `http://localhost:5000/api/products/${id}`,
-                    `https://shopfloww.onrender.com/api/products/${id}`,
+                    `${getBaseUrl()}/api/products/${id}`,
                      {
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -60,6 +62,10 @@ const EditProduct = () => {
 
         fetchProduct();
     }, [id]);
+
+     useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
 
     // Handle input changes
     const handleChange = (e) => {
@@ -142,7 +148,7 @@ const EditProduct = () => {
                 imageUrl: [...formData.imageUrl, ...newImages]
             };
 
-            await axios.put(`http://localhost:5000/api/products/${id}`, updatedProduct, {
+            await axios.put(`${getBaseUrl()}/api/products/${id}`, updatedProduct, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`

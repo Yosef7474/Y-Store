@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import getBaseUrl from '../utils/baseUrl';
+import api from '../utils/api';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -10,23 +11,28 @@ const ProductList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
+  // Scroll to top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Fetch products with caching
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get( 
-          // 'http://localhost:5000/api/products'
-          'https://shopfloww.onrender.com/api/products'
-        );
+        const res = await api.get(`${getBaseUrl()}/api/products`);
+        
+        console.log('Cache status:', res.cached ? 'HIT' : 'MISS');
+        
         if (Array.isArray(res.data)) {
           const sortedProducts = res.data.sort((a, b) => 
             new Date(b.createdAt) - new Date(a.createdAt)
           );
           setProducts(sortedProducts);
           setFilteredProducts(sortedProducts);
+          
           const uniqueCategories = [...new Set(sortedProducts.map(product => product.category))];
           setCategories(uniqueCategories);
-        } else {
-          console.error('Expected an array but got:', res.data);
         }
       } catch (err) {
         console.error('Error fetching products:', err);
@@ -38,22 +44,20 @@ const ProductList = () => {
     fetchProducts();
   }, []);
 
+  // Filter products based on category and search query
   useEffect(() => {
-    // Apply both category filter and search filter
     let result = products;
     
-    // Apply category filter
     if (selectedCategory) {
       result = result.filter(product => product.category === selectedCategory);
     }
     
-    // Apply search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(product => 
         product.name.toLowerCase().includes(query) ||
         product.description.toLowerCase().includes(query) ||
-        product.category.toLowerCase().includes(query)
+        (product.category && product.category.toLowerCase().includes(query))
       );
     }
     
@@ -61,11 +65,17 @@ const ProductList = () => {
   }, [selectedCategory, searchQuery, products]);
 
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
+    setSelectedCategory(prevCategory => prevCategory === category ? '' : category);
   };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  // Function to manually clear cache (call this after mutations)
+  const clearProductCache = () => {
+    api.storage.clear();
+    console.log('Product cache cleared');
   };
 
   if (loading) {
@@ -80,52 +90,54 @@ const ProductList = () => {
     <div className="min-h-screen bg-gray-50 pt-20 pb-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header with Search */}
-        <div className="text-center mb-12  bg-gray-50 z-10 py-4">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text">
-            What are you looking for?
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+            Discover Products
           </h1>
-          <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
-            Discover amazing items from local sellers
+          <p className="mt-2 text-lg text-gray-600">
+            Find what you need from local sellers
           </p>
 
           {/* Search Bar */}
-          <div className="mt-8 max-w-md mx-auto relative">
+          <div className="mt-6 max-w-md mx-auto">
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search products..."
-                className="w-full px-6 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
                 value={searchQuery}
                 onChange={handleSearchChange}
               />
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                 <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Category Filters */}
-          <div className="flex flex-wrap justify-center gap-2 mt-8">
+        {/* Category Filters */}
+        <div className="mb-6 overflow-x-auto">
+          <div className="flex space-x-2 pb-2">
             <button
               onClick={() => handleCategoryClick('')}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
                 selectedCategory === '' 
-                  ? 'bg-blue-600 text-white shadow-md' 
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                  ? 'bg-blue-600 text-white' 
+                  : 'bg-white text-gray-700 border border-gray-200'
               }`}
             >
-              All Categories
+              All
             </button>
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => handleCategoryClick(category)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded-full text-sm lg:text-lg font-medium whitespace-nowrap ${
                   selectedCategory === category
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white text-gray-700 border border-gray-200'
                 }`}
               >
                 {category}
@@ -155,113 +167,54 @@ const ProductList = () => {
               {searchQuery 
                 ? `No results for "${searchQuery}"`
                 : selectedCategory
-                ? `No products in the ${selectedCategory} category`
+                ? `No products in ${selectedCategory}`
                 : "No products available"}
             </p>
-            {searchQuery && (
-              <button
-                onClick={() => {
-                  setSearchQuery('');
-                  setSelectedCategory('');
-                }}
-                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                Clear search
-              </button>
-            )}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {filteredProducts.map((product) => (
               <Link 
                 to={`/detail/${product._id}`} 
                 key={product._id} 
-                className="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300"
+                className="group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200"
               >
-                <div className="relative pb-[75%] bg-gray-100 overflow-hidden">
+                {/* Image Container */}
+                <div className="relative pb-[100%] bg-gray-100">
                   {product.imageUrl?.length > 0 && (
                     <img
-                      className="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="absolute h-full w-full object-cover"
                       src={product.imageUrl[0]}
                       alt={product.name}
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/300x300?text=No+Image';
+                      }}
                     />
                   )}
-                  {Date.now() - new Date(product.createdAt).getTime() < 1 * 24 * 60 * 60 * 1000 && (
+                  {/* NEW badge */}
+                  {Date.now() - new Date(product.createdAt).getTime() < 24 * 60 * 60 * 1000 && (
                     <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                       NEW
                     </span>
                   )}
                 </div>
-                <div className="p-5">
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      {product.name.length > 20 
-                        ? `${product.name.substring(0, 19)}...` 
-                        : product.name}
-                    </h3>
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-base font-medium bg-gray-200 text-blue-500">
-                      ETB:{product.price.toLocaleString()}
+                
+                {/* Product Info */}
+                <div className="p-3">
+                  <h3 className="font-medium text-gray-900 line-clamp-2">
+                    {product.name}
+                  </h3>
+                  <div className="mt-1 flex items-center justify-between">
+                    <span className="text-lg font-bold text-blue-600">
+                      ETB {product.price?.toLocaleString() || 'N/A'}
                     </span>
                   </div>
-                  {searchQuery && (
-                    <p className="text-sm text-gray-500 mt-1 line-clamp-2">
-                      {product.description}
-                    </p>
-                  )}
-                  <div className="mt-4 flex items-center text-sm text-gray-500">
-                    <svg
-                      className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    {product.seller?.name || 'Unknown seller'}
-                  </div>
-                  <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <svg
-                      className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 012.43 8.326 13.019 13.019 0 012 5V3.5z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    {product.seller?.phone || 'N/A'}
-                  </div>
-                  <div className="mt-3 flex items-center text-xs text-gray-400">
-                    <svg
-                      className="flex-shrink-0 mr-1.5 h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    {Date.now() - new Date(product.createdAt).getTime() < 1 * 24 * 60 * 60 * 1000
-                      ? `Listed today at ${new Date(product.createdAt).toLocaleTimeString('en-US', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}`
-                      : `Listed ${new Date(product.createdAt).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric',
-                        })}`}
-                  </div>
+                  <span className="text-xs text-gray-500">
+                    Listed on {new Date(product.createdAt).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric'
+                    })}
+                  </span>
                 </div>
               </Link>
             ))}

@@ -2,6 +2,8 @@ import React from 'react'
 import { createCookie, Link } from 'react-router-dom'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import getBaseUrl from '../utils/baseUrl'
 
 const Login = () => {
   const [formData, setFormData] = React.useState({
@@ -13,8 +15,7 @@ const Login = () => {
       e.preventDefault();
       try {
         const res = await axios.post(
-          // 'http://localhost:5000/api/auth/login',
-          'https://shopfloww.onrender.com/api/auth/login',
+          `${getBaseUrl()}/api/auth/login`,
            formData);
         document.cookie = `token=${res.data.token}; path=/;`; // Save the token in a cookie
         alert('Login successful!');
@@ -25,6 +26,11 @@ const Login = () => {
         alert('Invalid credentials');
       }
     };
+
+
+     useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
 
     // value
   return (

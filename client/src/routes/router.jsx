@@ -11,6 +11,7 @@ import Myproducts from "../components/Myproducts.jsx";
 import EditProduct from "../components/EditProduct.jsx";
 import Home from "../components/Home.jsx";
 import Contact from "../components/Contact.jsx";
+import LikedProducts from "../components/LikedProducts.jsx";
 
 
 
@@ -24,6 +25,7 @@ const router = createBrowserRouter([{
       { path: 'aboutus', element: <Aboutus /> },
       { path: 'Detail/:id', element: <Detail/> },
       { path: 'contact', element: <Contact/>},
+      {path: 'liked', element: <PrivateRoute><LikedProducts/></PrivateRoute>},
       { 
         path: 'addproduct', 
         element: (
