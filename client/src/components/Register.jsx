@@ -5,6 +5,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import getBaseUrl from '../utils/baseUrl'
+import { useEffect } from 'react'
 
 
 const Register = () => {
