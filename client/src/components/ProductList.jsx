@@ -72,11 +72,6 @@ const ProductList = () => {
     setSearchQuery(e.target.value);
   };
 
-  // Function to manually clear cache (call this after mutations)
-  const clearProductCache = () => {
-    api.storage.clear();
-    console.log('Product cache cleared');
-  };
 
   if (loading) {
     return (

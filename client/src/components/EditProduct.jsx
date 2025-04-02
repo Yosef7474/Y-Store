@@ -23,7 +23,7 @@ const EditProduct = () => {
     // Get token helper function
     const getToken = () => {
         return document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || 
-               localStorage.getItem('token');
+        Cookies.getItem('token');
     };
 
 
@@ -39,8 +39,7 @@ const EditProduct = () => {
 
                 const response = await axios.get( 
                     `${getBaseUrl()}/api/products/${id}`,
-                     {
-                    headers: { Authorization: `Bearer ${token}` }
+                     { headers: { Authorization: `Bearer ${token}` }
                 });
                 
                 setFormData({
@@ -78,32 +77,34 @@ const EditProduct = () => {
 
     // Handle image uploads
     const handleImageUpload = async (files) => {
-        setUploading(true);
-        try {
-            const token = getToken();
-            const uploadedUrls = [];
-            
-            for (const file of files) {
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('upload_preset', 'marketplace');
-                
+    setUploading(true);
+    try {
+        const uploadedUrls = [];
 
-                const response = await axios.post(
-                    'https://api.cloudinary.com/v1_1/dmh8bkedu/image/upload',
-                    formData
-                );
-                uploadedUrls.push(response.data.secure_url);
-            }
-            
-            return uploadedUrls;
-        } catch (error) {
-            console.error('Error uploading images:', error);
-            throw error;
-        } finally {
-            setUploading(false);
+        for (const file of files) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'marketplace');
+
+            const response = await fetch(
+                "https://api.cloudinary.com/v1_1/dmh8bkedu/image/upload",
+                { method: "POST", body: formData }
+            );
+
+            if (!response.ok) throw new Error("Image upload failed");
+
+            const data = await response.json();
+            uploadedUrls.push(data.secure_url);
         }
-    };
+        return uploadedUrls;
+    } catch (error) {
+        console.error("Error uploading images:", error);
+        throw error;
+    } finally {
+        setUploading(false);
+    }
+};
+
 
     // Handle new image selection
     const handleNewImages = async (e) => {

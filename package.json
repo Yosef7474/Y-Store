@@ -4,6 +4,10 @@
   },
   "scripts": {
     "server-install": "cd server && npm install",
-    "server-start": "cd server && npm start"
+    "server-start": "cd server && npm start",
+    "start": "node server.js",
+  "devstart": "nodemon server.js",
+  "build": "echo 'Build complete'",
+  "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

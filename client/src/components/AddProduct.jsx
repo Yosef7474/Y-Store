@@ -93,28 +93,26 @@ const uploadImagesToCloudinary = async (files) => {
   
   for (const file of files) {
     try {
-      // Compress image before upload
+      // Compress image before upload (implement compressImage function if needed)
       const compressedFile = await compressImage(file);
       
       const formData = new FormData();
       formData.append('file', compressedFile);
       formData.append('upload_preset', 'marketplace');
       
-      // Additional Cloudinary transformations
-      
-
-      const response = await axios.post(
-        'https://api.cloudinary.com/v1_1/dmh8bkedu/image/upload',
-        formData
+      // Upload image using fetch
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dmh8bkedu/image/upload",
+        { method: "POST", body: formData }
       );
-
-      if (!response.data.secure_url) {
+      
+      const data = await response.json(); // Ensure response is parsed properly
+      
+      if (!data.secure_url) {
         throw new Error('Image upload failed');
       }
       
-      console.log('Uploaded image size:', 
-        Math.round(response.data.bytes / 1024) + 'KB');
-      uploadedUrls.push(response.data.secure_url);
+      uploadedUrls.push(data.secure_url);
     } catch (err) {
       console.error('Error uploading image:', err);
       throw new Error(`Failed to upload ${file.name}: ${err.message}`);
@@ -123,6 +121,7 @@ const uploadImagesToCloudinary = async (files) => {
   
   return uploadedUrls;
 };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -143,14 +142,20 @@ const uploadImagesToCloudinary = async (files) => {
       };
 
       // Get token from cookies
-      const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+      const getToken = () => {
+        return document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || 
+        Cookies.getItem('token');
+    };
+      // const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || 
+      // Cookies.getItem('token');
+      const token = getToken();
       if (!token) {
         throw new Error('No authentication token found');
       }
 
       // Send to backend
       const response = await axios.post(
-        `${getBaseUrl()}/api/products/api/products/add`,
+        `${getBaseUrl()}/api/products/add`,
         productData,
         {
           headers: {

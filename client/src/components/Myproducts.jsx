@@ -43,16 +43,21 @@ const Myproducts = () => {
         fetchMyProducts();
     }, []);
 
-    const handleDelete = async (productId) => {
+
+     // Get token helper function
+     const getToken = () => {
+        return document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || 
+        Cookies.getItem('token');
+    };
+    const handleDelete = async (id) => {
         if (!window.confirm('Are you sure you want to delete this product?')) {
             return;
         }
 
         try {
-            const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || 
-                         localStorage.getItem('token');
+            const token = getToken();
             
-            await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+            await axios.delete(`${getBaseUrl()}/api/products/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

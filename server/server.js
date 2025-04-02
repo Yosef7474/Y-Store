@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 // middleware
 app.use(cors(
- { origin: ['https://api.cloudinary.com/v1_1/dmh8bkedu/image/upload', 'http://localhost:5173','https://shopflow-pi.vercel.app','https://shopflow-git-main-yosefs-projects-c385ad18.vercel.app'],
+ { origin: ['http://localhost:5173','https://api.cloudinary.com/v1_1/dmh8bkedu/image/upload','https://shopflow-pi.vercel.app','https://shopflow-git-main-yosefs-projects-c385ad18.vercel.app'],
   credentials: true}
 ));
 app.use(express.json());
