@@ -155,6 +155,8 @@ const EditProduct = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            
+            localStorage.removeItem('productFormData');
 
             navigate('/myproducts');
         } catch (error) {
