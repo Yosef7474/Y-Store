@@ -156,7 +156,7 @@ const EditProduct = () => {
                 }
             });
             
-            localStorage.removeItem('productFormData');
+            localStorage.removeItem();
 
             navigate('/myproducts');
         } catch (error) {
