@@ -10,12 +10,13 @@ import { useEffect } from 'react'
 
 const Register = () => {
 
-  const [formdata, setFormdata] = React.useState({
+  const [formdata, setFormdata] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    phone: ''
+    phone: '',
+    address: ''
   })
 
    useEffect(() => {
@@ -69,19 +70,40 @@ const Register = () => {
               onChange={(e) => setFormdata({...formdata, password: e.target.value})}
               required className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
-            {/* <div className="mb-6">
-              <label htmlFor="confirmPassword" className="block text-gray-700 text-sm font-bold mb-2">Confirm Password:</label>
-              <input type="password" id="confirmPassword" name="confirmPassword" 
-              value={formdata.confirmPassword}
-              onChange={(e) => setFormdata({...formdata, confirmPassword: e.target.value})}
+
+            <div className="mb-6">
+              <label htmlFor="address" className="block text-gray-700 text-sm font-bold mb-2">Address:</label>
+              <input type="address" id="address" name="address" 
+              value={formdata.address}
+              onChange={(e) => setFormdata({...formdata, address: e.target.value})}
               required className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div> */}
+            </div>
             <div className="mb-6">
               <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2">phone:</label>
-              <input type="number" id="phone" name="phone" 
-              value={formdata.phone}
-              onChange={(e) => setFormdata({...formdata, phone: e.target.value})}
-              required className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <input
+                type="number"
+                id="phone"
+                name="phone"
+                value={formdata.phone}
+                onChange={(e) => {
+                  const phone = e.target.value;
+                  if (phone.length > 10) {
+                    alert("invalid phone number");
+                    return;
+                  }
+                  setFormdata({ ...formdata, phone });
+                }}
+                onBlur={() => {
+                  if (
+                    formdata.phone.length !== 10 ||
+                    !(formdata.phone.startsWith("09") || formdata.phone.startsWith("07"))
+                  ) {
+                    alert("Invalid phone number. The number has to start with 09 or 07 and be 10 digits long.");
+                  }
+                }}
+                required
+                className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
             <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300">Register</button>
             
@@ -92,7 +114,7 @@ const Register = () => {
           <img className="w-full h-full object-cover max-sm:hidden" src={registerImage} alt="Register" />
         </div>
 
-        
+        {/* 0901255136 */}
         
       </div>
     </>

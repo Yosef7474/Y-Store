@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 // register user
 exports.register = async (req, res) => {
-    const { name, email, password, phone } = req.body;
+    const { name, email, password, phone, address } = req.body;
 
     try {
         const existingUser = await User.findOne({ $or: [{ email }, { phone }] });;
@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
             return res.status(400).json({ message: "User already registered" });
         }
 
-        const user = new User({ name, email, password, phone });
+        const user = new User({ name, email, password, phone, address });
         await user.save();
         const token = jwt.sign({ id: user._id, name: user.name, phone: user.phone }, process.env.JWT_SECRET, { expiresIn: "30d" });
         res.status(201).json({ message: "User registered successfully", token });

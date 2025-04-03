@@ -10,6 +10,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
+    localStorage.clear();
     navigate('/');
     setIsOpen(false); // Close menu after logout
   };

@@ -9,7 +9,6 @@ const AddProduct = () => {
     name: '',
     description: '',
     price: '',
-    phone: '',
     address: '',
     category: ''
   });

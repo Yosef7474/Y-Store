@@ -29,11 +29,6 @@ const productSchema = new mongoose.Schema({
         name: { type: String, required: true },
         phone: { type: String, required: true },
       },
-    phone: {
-        type: Number,
-        ref: 'User',
-        required: true
-    },
     address:{
         type: String,
         required: true
@@ -42,11 +37,7 @@ const productSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    liked: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-        
-      }]
+    
 });
 
 module.exports = mongoose.model('Product', productSchema);

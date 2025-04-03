@@ -5,10 +5,10 @@ const User = require('../models/User');
 exports.addProduct = async (req, res) => {
     
 
-    const { name, description, price, imageUrl, category, phone, address } = req.body;
+    const { name, description, price, imageUrl, category, address } = req.body;
 
     try {
-        const product = new Product({ name, description, price, imageUrl, phone,category, address, seller: {
+        const product = new Product({ name, description, price, imageUrl,category, address, seller: {
         id: req.user.id, // Seller ID
         name: req.user.name, // Seller username
         phone: req.user.phone, // Seller phone number
