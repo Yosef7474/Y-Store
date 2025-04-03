@@ -63,6 +63,7 @@ const Myproducts = () => {
                 }
             });
             
+            localStorage.clear()
             // Refresh the product list after deletion
             fetchMyProducts();
         } catch (error) {

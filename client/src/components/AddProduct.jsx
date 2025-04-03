@@ -167,6 +167,7 @@ const uploadImagesToCloudinary = async (files) => {
 
       console.log('Product added:', response.data);
       alert('Product added successfully!');
+      localStorage.clear();
       navigate('/');
     } catch (err) {
       console.error('Error:', err.response?.data || err);
@@ -269,22 +270,6 @@ const uploadImagesToCloudinary = async (files) => {
               {images.length} image(s) selected
             </p>
           )}
-        </div>
-
-        {/* Phone */}
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
-            Phone:
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="tel"
-            id="phone"
-            placeholder="Phone"
-            value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            required
-          />
         </div>
 
         {/* Address */}

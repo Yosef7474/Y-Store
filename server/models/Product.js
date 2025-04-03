@@ -30,7 +30,8 @@ const productSchema = new mongoose.Schema({
         phone: { type: String, required: true },
       },
     phone: {
-        type: String,
+        type: Number,
+        ref: 'User',
         required: true
     },
     address:{
@@ -43,7 +44,8 @@ const productSchema = new mongoose.Schema({
     },
     liked: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product'
+        ref: 'Product',
+        
       }]
 });
 

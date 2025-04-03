@@ -38,6 +38,8 @@ const Detail = () => {
         fetchProduct();
     }, [id]);
 
+
+    
     useEffect(() => {
         window.scrollTo(0, 0);
       }, []);
@@ -218,17 +220,17 @@ const Detail = () => {
                             </div>
                             
                             {/* Seller info */}
-                            {product.sellerName && (
+                            {product.seller && (
                                 <div className="mb-6 sm:mb-8 p-3 bg-gray-50 rounded-lg">
                                     <h4 className="text-sm sm:text-base font-medium text-gray-900 mb-1">Seller Information</h4>
-                                    <p className="text-sm text-gray-600">{product.sellerName}</p>
-                                    {product.location && (
+                                    <p className="text-sm text-gray-600">{product.seller.name}</p>
+                                    {product.address && (
                                         <p className="text-sm text-gray-600 flex items-center mt-1">
                                             <svg className="h-4 w-4 mr-1 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                             </svg>
-                                            {product.location}
+                                            {product.address}
                                         </p>
                                     )}
                                 </div>
@@ -237,7 +239,7 @@ const Detail = () => {
                             {/* Action buttons */}
                             <div className="flex flex-col sm:flex-row gap-3">
                                 <a 
-                                    href={`tel:${product.phoneNumber || ''}`}
+                                    href={`tel:${product.seller.phone || ''}`}
                                     className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 px-4 sm:px-6 rounded-lg font-medium transition-all hover:shadow-md flex items-center justify-center"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -245,6 +247,7 @@ const Detail = () => {
                                     </svg>
                                     Call Seller
                                 </a>
+                                
                                 <button className="flex-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 py-3 px-4 sm:px-6 rounded-lg font-medium transition-all hover:shadow-md flex items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
