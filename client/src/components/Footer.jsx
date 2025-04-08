@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/shopflowlogo.png'
 
 const Footer = () => {
   return (
@@ -11,7 +12,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center text-2xl font-bold">
               <img 
               className='h-14'
-              src="./src/assets/shopflowlogo.png" alt="" />
+              src={logo} alt="" />
              
             </Link>
             <p className="text-gray-400">
@@ -92,28 +93,6 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-
-          {/* Newsletter */}
-          {/* <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Subscribe to Newsletter</h3>
-            <p className="text-gray-400">
-              Get updates on special offers and promotions.
-            </p>
-            <form className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="px-4 py-2 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                required
-              />
-              <button
-                type="submit"
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-md text-white transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div> */}
         </div>
 
         {/* Copyright */}
