@@ -112,10 +112,7 @@ const Register = () => {
         </div>
         <div className="w-1/2 h-screen">
           <img className="w-full h-full object-cover max-sm:hidden" src={registerImage} alt="Register" />
-        </div>
-
-        {/* 0901255136 */}
-        
+        </div>        
       </div>
     </>
   )

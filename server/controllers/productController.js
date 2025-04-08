@@ -76,11 +76,7 @@ exports.updateProducts = async (req, res) => {
             return res.status(403).json({ message: "Not authorized to update this product" });
         }
         
-        const updateProducts = await Product.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            {new: true}
-        )
+        const updateProducts = await Product.findByIdAndUpdate( req.params.id, req.body, {new: true} )
 
         res.status(200).json({message: "updated !!!", product: updateProducts})
 

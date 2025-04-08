@@ -9,15 +9,10 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center text-2xl font-bold">
-              <svg 
-                className="h-8 w-8 mr-2" 
-                fill="currentColor" 
-                viewBox="0 0 20 20" 
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
-              </svg>
-              SHOPFLOW
+              <img 
+              className='h-14'
+              src="./src/assets/shopflowlogo.png" alt="" />
+             
             </Link>
             <p className="text-gray-400">
               The best marketplace for buying and selling quality products.
