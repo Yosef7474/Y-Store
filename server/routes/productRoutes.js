@@ -27,6 +27,7 @@ router.delete('/:id', authMiddleware, productController.deleteProduct)
 
 
 // // add liked products
+
 // router.post('/like', authMiddleware, productController.likeProducts)
 // // get liked products
 // router.get('/getlike', authMiddleware, productController.likedProducts)
