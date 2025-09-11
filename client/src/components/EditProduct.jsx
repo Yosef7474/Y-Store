@@ -30,6 +30,7 @@ const EditProduct = () => {
 
 
 
+
     // Fetch product data
     useEffect(() => {
         const fetchProduct = async () => {
