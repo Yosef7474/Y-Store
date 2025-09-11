@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       
       try {
+        
         // Decode the JWT token
         const payloadBase64 = token.split(".")[1];
         const decodedPayload = JSON.parse(atob(payloadBase64)); // Decode base64 payload
