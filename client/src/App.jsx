@@ -17,6 +17,7 @@ function App({children}) {
    <AuthProvider>
 
           <Navbar />
+          
         <main className="min-h-screen mx-auto">
           {children}
           <Outlet />
