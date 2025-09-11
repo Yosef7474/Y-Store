@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = Cookies.get("token"); // Get token from cookie
     if (token) {
+      
       try {
         // Decode the JWT token
         const payloadBase64 = token.split(".")[1];
