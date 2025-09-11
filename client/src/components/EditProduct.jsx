@@ -15,6 +15,7 @@ const EditProduct = () => {
         category: '',
         imageUrl: []
     });
+    
     const [newImages, setNewImages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
