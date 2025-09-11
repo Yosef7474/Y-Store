@@ -16,6 +16,7 @@ const EditProduct = () => {
         imageUrl: []
     });
     
+    
     const [newImages, setNewImages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
